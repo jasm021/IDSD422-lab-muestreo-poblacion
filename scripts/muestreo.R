@@ -7,6 +7,10 @@
 #
 # Uso (desde la raíz del repositorio):  Rscript scripts/muestreo.R
 
+%load_ext rpy2.ipython #esto permite ejecutar R dentro de collab usando la cabecera %%R en una celda
+
+%%R
+
 poblacion <- read.csv("data/clientes_400.csv")
 
 reporte <- function(nombre, muestra, parametro) {
@@ -41,7 +45,7 @@ cat("Ciudades en la población: "); print(table(poblacion$ciudad))
 #         Pista: head(poblacion, 20) — igual que la demo de clase.
 #         Después de correrlo, mira la composición por ciudad que imprime el
 #         reporte: ¿es un corte al azar? ¿alguna ciudad falta por completo?
-muestra_conv <- NULL
+muestra_conv <- head(poblacion, 20)
 
 # ---------------------------------------------------------------------------
 # 3. Muestra aleatoria simple: el sorteo de 20
@@ -52,7 +56,8 @@ muestra_conv <- NULL
 # TODO 3: repite el sorteo con las semillas 2 a 5 y anota las 5 medias en el
 #         informe: la variabilidad de la estimación es parte de la lección.
 #         Pista: for (semilla in 1:5) { set.seed(semilla); ... }
-muestra_aas <- NULL
+set.seed(1) #semilla para numeros randomicos
+muestra_aas <- poblacion[sample(nrow(poblacion), 20), ]
 
 # ---------------------------------------------------------------------------
 # 4. Muestra estratificada: 5 % dentro de cada ciudad
@@ -62,7 +67,9 @@ muestra_aas <- NULL
 #         Cuenca (20 en total).
 #         Pista: library(dplyr); poblacion |> group_by(ciudad) |> slice_sample(prop = 0.05)
 #         ¿Qué garantiza este diseño que el sorteo simple no garantiza?
-muestra_est <- NULL
+library(dplyr)
+set.seed(1)
+muestra_est <- poblacion |> group_by(ciudad) |> slice_sample(prop = 0.05) # |> es como decir lo que tengo en la parte izq actua como un parametro de lo que esta a la derecha
 
 # ---------------------------------------------------------------------------
 # 5. Comparación final
