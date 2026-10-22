@@ -33,9 +33,12 @@ str(clientes)
 # TODO 2: completa el bucle para imprimir, por columna, cuántos valores únicos
 #         hay y cuáles son. Pista: for (columna in names(clientes)) { ... } con
 #         unique() y length(). ¿Cuántas categorías tiene genero?
-# for (columna in names(clientes)) {
-#   ...
-# }
+cat("\nValores únicos por columna:\n")
+for (columna in names(clientes)) {
+  valores <- unique(clientes[[columna]])
+  cat(sprintf("  %-20s %3d únicos -> %s\n", columna, length(valores),
+              paste(valores, collapse = ", ")))
+}
 
 # ---------------------------------------------------------------------------
 # 4. Declarar el orden de las variables ordinales
@@ -46,10 +49,27 @@ str(clientes)
 #
 # TODO 3: convierte nivel_educacion con factor(..., levels = c(...), ordered = TRUE).
 #         Comprueba con min(): debe devolver "Primaria".
+clientes$nivel_educacion <- factor(clientes$nivel_educacion,
+                                   levels = c("Primaria", "Secundaria", "Universidad", "Posgrado"),
+                                   ordered = TRUE)
+cat("\nnivel_educacion — orden declarado:", levels(clientes$nivel_educacion), "\n")
+cat("  min:", as.character(min(clientes$nivel_educacion)),
+    "| max:", as.character(max(clientes$nivel_educacion)), "\n")
+
 # TODO 4: haz lo mismo con satisfaccion (escala 1–5 como etiquetas ordenadas).
 #         Prueba extra: ¿qué pasa si en levels escribes "Postgrado" (con t) para
 #         nivel_educacion? Cuenta los faltantes con sum(is.na(...)) — la trampa
 #         del typo es silenciosa.
+clientes$satisfaccion <- factor(clientes$satisfaccion, levels = 1:5, ordered = TRUE)
+cat("satisfaccion — orden declarado:", levels(clientes$satisfaccion), "\n")
+cat("  min:", as.character(min(clientes$satisfaccion)),
+    "| max:", as.character(max(clientes$satisfaccion)), "\n")
+
+original <- read.csv("data/clientes.csv", stringsAsFactors = FALSE)
+con_typo <- factor(original$nivel_educacion,
+                   levels = c("Primaria", "Secundaria", "Universidad", "Postgrado"),
+                   ordered = TRUE)
+cat("Faltantes con el typo 'Postgrado':", sum(is.na(con_typo)), "\n")
 
 # ---------------------------------------------------------------------------
 # 5. Resumen de la clasificación (para el informe)
@@ -57,14 +77,14 @@ str(clientes)
 # TODO 5: completa el resumen con el tipo de cada variable (el criterio que
 #         justifica cada clasificación va en el informe).
 clasificacion <- c(
-  cliente_id         = "…",
-  edad               = "…",
-  numero_hijos       = "…",
-  genero             = "…",
-  nivel_educacion    = "…",
-  ciudad             = "…",
-  ingresos_mensuales = "…",
-  satisfaccion       = "…"
+  cliente_id         = "Identificador (categórica nominal, no se analiza)",
+  edad               = "Numérica continua (registrada en años cumplidos)",
+  numero_hijos       = "Numérica discreta",
+  genero             = "Categórica nominal (3 categorías)",
+  nivel_educacion    = "Categórica ordinal",
+  ciudad             = "Categórica nominal",
+  ingresos_mensuales = "Numérica continua",
+  satisfaccion       = "Categórica ordinal (escala 1–5)"
 )
 cat("\nResumen de la clasificación (para el informe):\n")
 for (variable in names(clasificacion)) {
