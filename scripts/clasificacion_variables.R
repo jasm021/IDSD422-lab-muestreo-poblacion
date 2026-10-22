@@ -10,6 +10,8 @@
 #
 # Uso (desde la raíz del repositorio):  Rscript scripts/clasificacion_variables.R
 
+%%R
+
 clientes <- read.csv("data/clientes.csv", stringsAsFactors = FALSE)
 
 # ---------------------------------------------------------------------------

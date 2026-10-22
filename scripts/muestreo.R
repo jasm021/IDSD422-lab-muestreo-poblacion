@@ -59,6 +59,15 @@ muestra_conv <- head(poblacion, 20)
 set.seed(1) #semilla para numeros randomicos
 muestra_aas <- poblacion[sample(nrow(poblacion), 20), ]
 
+cat("Aleatorio simple — medias por semilla:\n")
+for (semilla in 1:5) {
+  set.seed(semilla)
+  muestra <- poblacion[sample(nrow(poblacion), 20), ]
+  media <- mean(muestra$ingresos_mensuales)
+  cat(sprintf("  semilla %d: media=%.2f USD  (diferencia %+.2f)\n",
+              semilla, media, media - parametro))
+}
+
 # ---------------------------------------------------------------------------
 # 4. Muestra estratificada: 5 % dentro de cada ciudad
 # ---------------------------------------------------------------------------
