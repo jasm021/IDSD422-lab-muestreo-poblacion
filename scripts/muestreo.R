@@ -59,6 +59,7 @@ muestra_conv <- head(poblacion, 20)
 set.seed(1) #semilla para numeros randomicos
 muestra_aas <- poblacion[sample(nrow(poblacion), 20), ]
 
+
 cat("Aleatorio simple — medias por semilla:\n")
 for (semilla in 1:5) {
   set.seed(semilla)

@@ -60,6 +60,15 @@ muestra_conv = poblacion.head(20)
 #         informe: la variabilidad de la estimación es parte de la lección.
 muestra_aas = poblacion.sample(20, random_state=1)
 
+
+print("Aleatorio simple — medias por semilla:")
+for semilla in range(1, 6):
+    muestra = poblacion.sample(20, random_state=semilla)
+    media = muestra["ingresos_mensuales"].mean()
+    print(f"  semilla {semilla}: media={media:.2f} USD  (diferencia {media - parametro:+.2f})  "
+          f"composición: {muestra['ciudad'].value_counts().to_dict()}")
+print()
+
 # ---------------------------------------------------------------------------
 # 4. Muestra estratificada: 5 % dentro de cada ciudad
 # ---------------------------------------------------------------------------
